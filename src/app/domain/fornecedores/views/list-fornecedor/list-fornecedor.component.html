@@ -1,12 +1,12 @@
 <main class="flex justify-center flex-col items-center w-full gap-8">
     <form [formGroup]="form" class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-2">
         <div class="flex flex-col gap-2 w-full lg:flex-1">
-            <label for="id">ID</label>
-            <p-inputnumber inputId="integeronly" placeholder="Digite o ID do produto" id="id" formControlName="id" />
+            <label for="cnpj">CNPJ</label>
+            <input pInputText id="cnpj" placeholder="Digite o CNPJ" formControlName="cnpj" />
         </div>
         <div class="flex flex-col gap-2 w-full lg:flex-2">
-            <label for="descricao">Descrição</label>
-            <input pInputText id="descricao" placeholder="Digite a descricao do produto" formControlName="descricao" />
+            <label for="razaoSocial">Razão Social</label>
+            <input pInputText id="razaoSocial" placeholder="Digite a descricao do produto" formControlName="razaoSocial" />
         </div>
         <div class="flex flex-col gap-2 w-full lg:flex-1">
             <label for="situacao">Situação</label>
@@ -19,24 +19,26 @@
     </form>
 
     <section class="flex flex-col gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-2">
-        <p-table [value]="produtos" stripedRows [tableStyle]="{ 'min-width': '20rem', width: '100%', 'align-self': 'center' }" class="w-full">
+        <p-table [value]="fornecedores" stripedRows [tableStyle]="{ 'min-width': '20rem', width: '100%', 'align-self': 'center' }" class="w-full">
             <ng-template #header>
                 <tr>
-                    <th>Codigo</th>
-                    <th>Descricao</th>
+					<th>Razão Social</th>
+                    <th>CNPJ</th>
+                    <th>Data Baixa</th>
                     <th>Situação</th>
-                    <th style="width: 10rem"></th>
+                    <th></th>
                 </tr>
             </ng-template>
-            <ng-template #body let-produto>
+            <ng-template #body let-fornecedor>
                 <tr>
-                    <td>{{ produto.id }}</td>
-                    <td>{{ produto.descricao }}</td>
-                    <td>{{ produto.situacao }}</td>
+					<td>{{ fornecedor.razaoSocial }}</td>
+                    <td>{{ fornecedor.cnpj }}</td>
+                    <td>{{ fornecedor.dataBaixa }}</td>
+                    <td>{{ fornecedor.situacao }}</td>
                     <td class="flex justify-center gap-2">
-                        <p-button icon="pi pi-pencil" (click)="editarProduto(produto)" severity="info" rounded />
-                        <p-button icon="pi pi-trash" (click)="editarProduto(produto)" severity="danger" rounded />
-                        <p-button icon="pi pi-power-off" (click)="editarProduto(produto)" severity="secondary" rounded />
+                        <p-button icon="pi pi-pencil" (click)="editarFornecedor(fornecedor)" severity="info" rounded />
+                        <p-button icon="pi pi-trash" (click)="editarFornecedor(fornecedor)" severity="danger" rounded />
+                        <p-button icon="pi pi-ban" (click)="editarFornecedor(fornecedor)" severity="secondary" rounded />
                     </td>
                 </tr>
             </ng-template>

@@ -1,5 +1,5 @@
 export enum SituacaoFornecedorEnum {
     ATIVO = 'ATIVO',
-    INATIVO = 'INATIVO',
+    SUSPENSO = 'SUSPENSO',
     BAIXADO = 'BAIXADO',
 }
