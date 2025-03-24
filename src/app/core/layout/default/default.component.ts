@@ -1,11 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core'
-import { Router, RouterOutlet } from '@angular/router'
-import { MenuItem } from 'primeng/api'
-import { Menubar } from 'primeng/menubar'
-
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
+import { InputTextModule } from 'primeng/inputtext';
+import { Menubar } from 'primeng/menubar';
+import { Ripple } from 'primeng/ripple';
 @Component({
     selector: 'app-default',
-    imports: [RouterOutlet, Menubar],
+    imports: [RouterOutlet, Menubar, AvatarModule, InputTextModule, Ripple, CommonModule],
     templateUrl: './default.component.html',
     styleUrl: './default.component.scss',
 })
