@@ -1,7 +1,7 @@
 import { SituacaoProdutoEnum } from "@models/enums/situacao-produto.enum";
 
 export interface ProdutoResponse { 
-	codigo: string;
+	id: string;
 	descricao: string;
 	situacao: SituacaoProdutoEnum;
 }
