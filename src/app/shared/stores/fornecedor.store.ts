@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
+import { FornecedorFilter } from '@models/dto/filters/fornecedor-filter.model'
 import { FornecedorRequest } from '@models/dto/requests/fornecedor-request.model'
 import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
 
@@ -16,6 +17,15 @@ export class FornecedorStore {
 
     getAllFornecedores() {
         return this.httClient.get<FornecedorResponse[]>(this.baseUrl, { headers: this.headers })
+    }
+
+    search(filter: FornecedorFilter) {
+        return this.httClient.get<FornecedorResponse[]>(
+            `${this.baseUrl}?cnpj=${filter.cnpj}&razaoSocial=${filter.razaoSocial}&situacao=${filter.situacao}`,
+            {
+                headers: this.headers,
+            }
+        )
     }
 
     getFornecedorById(id: number) {

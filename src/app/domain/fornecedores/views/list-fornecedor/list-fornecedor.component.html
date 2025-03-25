@@ -2,7 +2,7 @@
     <form [formGroup]="form" class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-2">
         <div class="flex flex-col gap-2 w-full lg:flex-1">
             <label for="cnpj">CNPJ</label>
-            <input pInputText id="cnpj" placeholder="Digite o CNPJ" formControlName="cnpj" />
+			<p-inputmask mask="99.999.999/9999-99" [autoClear]="false" id="cnpj" placeholder="00.000.000/0000-00" unmask="true" formControlName="cnpj" />
         </div>
         <div class="flex flex-col gap-2 w-full lg:flex-2">
             <label for="razaoSocial">Razão Social</label>
@@ -10,7 +10,7 @@
         </div>
         <div class="flex flex-col gap-2 w-full lg:flex-1">
             <label for="situacao">Situação</label>
-            <p-select formControlName="situacao" [options]="options" optionLabel="label" placeholder="Selecione uma situação" class="w-full" />
+            <p-select id="situacao" formControlName="situacao" [options]="options" optionLabel="label" placeholder="Selecione uma situação" class="w-full" />
         </div>
         <div class="flex flex-row gap-2">
             <p-button label="Pesquisar" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
