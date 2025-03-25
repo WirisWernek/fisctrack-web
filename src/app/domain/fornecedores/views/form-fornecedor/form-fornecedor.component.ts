@@ -6,20 +6,21 @@ import { SituacaoFornecedorEnum } from '@models/enums/situacao-fornecedor.enum'
 import { SituacaoProdutoEnum } from '@models/enums/situacao-produto.enum'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
 import { ButtonModule } from 'primeng/button'
+import { InputMaskModule } from 'primeng/inputmask'
 import { InputTextModule } from 'primeng/inputtext'
 import { SelectModule } from 'primeng/select'
 
 @Component({
     selector: 'app-form-fornecedor',
-    imports: [FormsModule, ReactiveFormsModule, SelectModule, InputTextModule, ButtonModule],
+    imports: [FormsModule, ReactiveFormsModule, SelectModule, InputTextModule, ButtonModule, InputMaskModule],
     templateUrl: './form-fornecedor.component.html',
     styleUrl: './form-fornecedor.component.scss',
 })
 export class FormFornecedorComponent {
     form: FormGroup
     fb = inject(FormBuilder)
-	fornecedorStore = inject(FornecedorStore)
-	router = inject(Router)
+    fornecedorStore = inject(FornecedorStore)
+    router = inject(Router)
 
     options: any[] = [
         { label: 'Ativo', value: SituacaoProdutoEnum.ATIVO },
@@ -46,8 +47,8 @@ export class FormFornecedorComponent {
             situacao: SituacaoFornecedorEnum[data.situacao.value as keyof typeof SituacaoFornecedorEnum],
         } as FornecedorRequest
 
-		this.fornecedorStore.createFornecedor(fornecedorRequest).subscribe(() => {
-			this.router.navigate(['/fornecedores'])
+        this.fornecedorStore.createFornecedor(fornecedorRequest).subscribe(() => {
+            this.router.navigate(['/fornecedores'])
             console.log('Fornecedor cadastrado com sucesso')
         })
     }
