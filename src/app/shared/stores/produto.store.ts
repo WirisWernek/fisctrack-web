@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
+import { ProdutoFilter } from '@models/dto/filters/produto-filter.model'
 import { ProdutoRequest } from '@models/dto/requests/produto-request.model'
 import { ProdutoResponse } from '@models/dto/responses/produto-reponse.model'
 
@@ -16,6 +17,13 @@ export class ProdutoStore {
 
     getAllProdutos() {
         return this.httClient.get<ProdutoResponse[]>(this.baseUrl, { headers: this.headers })
+    }
+
+    search(filter: ProdutoFilter) {
+        return this.httClient.get<ProdutoResponse[]>(
+            `${this.baseUrl}?id=${filter.id}&descricao=${filter.descricao}&situacao=${filter.situacao}`,
+            { headers: this.headers }
+        )
     }
 
     getProdutoById(id: number) {
