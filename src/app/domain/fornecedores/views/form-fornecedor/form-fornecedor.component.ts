@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { FornecedorRequest } from '@models/dto/requests/fornecedor-request.model'
+import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
 import { SituacaoFornecedorEnum } from '@models/enums/situacao-fornecedor.enum'
 import { SituacaoProdutoEnum } from '@models/enums/situacao-produto.enum'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
@@ -16,11 +17,14 @@ import { SelectModule } from 'primeng/select'
     templateUrl: './form-fornecedor.component.html',
     styleUrl: './form-fornecedor.component.scss',
 })
-export class FormFornecedorComponent {
+export class FormFornecedorComponent implements OnInit {
     form: FormGroup
     fb = inject(FormBuilder)
     fornecedorStore = inject(FornecedorStore)
     router = inject(Router)
+    route = inject(ActivatedRoute)
+
+    fornecedor?: FornecedorResponse
 
     options: any[] = [
         { label: 'Ativo', value: SituacaoProdutoEnum.ATIVO },
@@ -35,6 +39,22 @@ export class FormFornecedorComponent {
             email: ['', Validators.required],
             situacao: ['', Validators.required],
         })
+    }
+    ngOnInit(): void {
+        debugger
+        this.fornecedor = this.route.snapshot.data['fornecedor'] as FornecedorResponse
+        if (this.fornecedor) {
+            this.form.patchValue(
+                {
+                    razaoSocial: this.fornecedor.razaoSocial,
+                    cnpj: this.fornecedor.cnpj,
+                    telefone: this.fornecedor.telefone,
+                    email: this.fornecedor.email,
+                    situacao: this.options.find((option) => option.value === this.fornecedor!.situacao),
+                },
+                { emitEvent: false }
+            )
+        }
     }
 
     cadastrar() {
@@ -51,5 +71,13 @@ export class FormFornecedorComponent {
             this.router.navigate(['/fornecedores'])
             console.log('Fornecedor cadastrado com sucesso')
         })
+	}
+	
+    limpar() {
+        this.form.reset()
+    }
+
+    voltar() {
+        this.router.navigate(['/fornecedores'])
     }
 }

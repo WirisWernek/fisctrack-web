@@ -1,7 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { NotaFiscalRequest } from '@models/dto/requests/nota-fiscal-request.model'
+import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
+import { NotaFiscalResponse } from '@models/dto/responses/nota-fiscal-response.model'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
 import { NotaFiscalStore } from '@shared/stores/nota-fiscal.store'
 import { ButtonModule } from 'primeng/button'
@@ -38,6 +40,9 @@ export class FormNotaFiscalComponent implements OnInit {
 
     fornecedoresOption: any[] = []
     router = inject(Router)
+    route = inject(ActivatedRoute)
+
+    notaFiscal?: NotaFiscalResponse
 
     constructor() {
         this.form = this.fb.group({
@@ -56,15 +61,37 @@ export class FormNotaFiscalComponent implements OnInit {
         })
     }
     ngOnInit(): void {
-        this.fornecedorStore.getAllFornecedores().subscribe({
-            next: (value) => {
-                this.fornecedoresOption = value.map((f) => {
-                    return { label: f.razaoSocial, value: f.id }
-                })
-            },
-            error: (err) => {},
-            complete: () => {},
-        })
+        let fornecedores = this.route.snapshot.data['fornecedores'] as FornecedorResponse[]
+        if (fornecedores) {
+            this.fornecedoresOption = fornecedores.map((fornecedor) => ({ label: fornecedor.razaoSocial, value: fornecedor.id }))
+        } else {
+            this.fornecedorStore.getAllFornecedores().subscribe({
+                next: (value) => {
+                    this.fornecedoresOption = value.map((fornecedor) => ({ label: fornecedor.razaoSocial, value: fornecedor.id }))
+                },
+                error: (err) => {},
+                complete: () => {},
+            })
+        }
+
+        this.notaFiscal = this.route.snapshot.data['notaFiscal'] as NotaFiscalResponse
+        if (this.notaFiscal) {
+            this.form.patchValue(
+                {
+                    numeroNota: this.notaFiscal.numeroNota,
+                    total: this.notaFiscal.total,
+                    fornecedor: this.fornecedoresOption.find((option) => option.value === this.notaFiscal!.fornecedor.id),
+                    rua: this.notaFiscal.endereco.rua,
+                    numero: this.notaFiscal.endereco.numero,
+                    bairro: this.notaFiscal.endereco.bairro,
+                    cidade: this.notaFiscal.endereco.cidade,
+                    estado: this.notaFiscal.endereco.estado,
+                    pais: this.notaFiscal.endereco.pais,
+                    cep: this.notaFiscal.endereco.cep,
+                },
+                { emitEvent: false }
+            )
+        }
     }
 
     cadastrar() {

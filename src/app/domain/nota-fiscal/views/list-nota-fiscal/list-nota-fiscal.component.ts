@@ -16,6 +16,7 @@ import { NotaFiscalResponse } from './../../../../models/dto/responses/nota-fisc
 import { FornecedorStore } from './../../../../shared/stores/fornecedor.store'
 
 import localePt from '@angular/common/locales/pt'
+import { Router } from '@angular/router'
 
 registerLocaleData(localePt)
 
@@ -41,6 +42,7 @@ registerLocaleData(localePt)
 export class ListNotaFiscalComponent {
     notaFiscaltore = inject(NotaFiscalStore)
     fornecedorStore = inject(FornecedorStore)
+    router = inject(Router)
     fb = inject(FormBuilder)
     notasFiscais!: NotaFiscalResponse[]
     fornecedoresOption: any[] = []
@@ -71,7 +73,7 @@ export class ListNotaFiscalComponent {
     }
 
     editarFornecedor(notaFiscal: NotaFiscalResponse) {
-        console.log(notaFiscal)
+        this.router.navigate(['/notas-fiscais/form', notaFiscal.id])
     }
 
     limpar() {

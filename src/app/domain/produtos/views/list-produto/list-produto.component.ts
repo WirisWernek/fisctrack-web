@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { Router } from '@angular/router'
 import { ProdutoFilter } from '@models/dto/filters/produto-filter.model'
 import { ProdutoResponse } from '@models/dto/responses/produto-reponse.model'
 import { SituacaoProdutoEnum } from '@models/enums/situacao-produto.enum'
@@ -31,6 +32,7 @@ import { ToastModule } from 'primeng/toast'
 })
 export class ListProdutoComponent implements OnInit {
     produtoStore = inject(ProdutoStore)
+    router = inject(Router)
     fb = inject(FormBuilder)
     produtos!: ProdutoResponse[]
     options: any[] = [
@@ -59,21 +61,24 @@ export class ListProdutoComponent implements OnInit {
     }
 
     editarProduto(produto: ProdutoResponse) {
-        console.log(produto)
+        this.router.navigate(['/produtos/form', produto.id])
     }
 
-	limpar() { 
-		this.form.reset()
-		this.pesquisar()
-	}
-	
+    limpar() {
+        this.form.reset()
+        this.pesquisar()
+    }
+
     pesquisar() {
-		const data = this.form.getRawValue()
-		console.log(data)
+        const data = this.form.getRawValue()
+        console.log(data)
         let produtoFilter: ProdutoFilter = {
             id: data.id !== null && data.id.toString().trim() !== '' ? data.id : '',
             descricao: data.descricao !== null && data.descricao.trim() !== '' ? data.descricao : '',
-            situacao: data.situacao !== null && data.situacao !== ''  ? SituacaoProdutoEnum[data.situacao.value as keyof typeof SituacaoProdutoEnum].valueOf() : '',
+            situacao:
+                data.situacao !== null && data.situacao !== ''
+                    ? SituacaoProdutoEnum[data.situacao.value as keyof typeof SituacaoProdutoEnum].valueOf()
+                    : '',
         }
 
         this.produtoStore.search(produtoFilter).subscribe({

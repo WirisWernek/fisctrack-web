@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
+import { ProdutoResponse } from '@models/dto/responses/produto-reponse.model'
 import { SituacaoProdutoEnum } from '@models/enums/situacao-produto.enum'
 import { ProdutoStore } from '@shared/stores/produto.store'
 import { ButtonModule } from 'primeng/button'
@@ -14,12 +15,14 @@ import { ProdutoRequest } from './../../../../models/dto/requests/produto-reques
     templateUrl: './form-produto.component.html',
     styleUrl: './form-produto.component.scss',
 })
-export class FormProdutoComponent {
+export class FormProdutoComponent implements OnInit {
     form: FormGroup
     fb = inject(FormBuilder)
     router = inject(Router)
-
+    route = inject(ActivatedRoute)
     produtoStore = inject(ProdutoStore)
+
+    produto?: ProdutoResponse
 
     options: any[] = [
         { label: 'Ativo', value: SituacaoProdutoEnum.ATIVO },
@@ -31,6 +34,20 @@ export class FormProdutoComponent {
             descricao: ['', Validators.required],
             situacao: ['', Validators.required],
         })
+	}
+	
+    ngOnInit(): void {
+        debugger
+        this.produto = this.route.snapshot.data['produto'] as ProdutoResponse
+        if (this.produto) {
+            this.form.patchValue(
+                {
+                    descricao: this.produto.descricao,
+                    situacao: this.options.find((option) => option.value === this.produto!.situacao),
+                },
+                { emitEvent: false }
+            )
+        }
     }
 
     cadastrar() {
@@ -43,5 +60,13 @@ export class FormProdutoComponent {
             this.router.navigate(['/produtos'])
             console.log('Produto cadastrado com sucesso')
         })
+	}
+	
+	limpar() {
+        this.form.reset()
+    }
+
+    voltar() {
+        this.router.navigate(['/produtos'])
     }
 }

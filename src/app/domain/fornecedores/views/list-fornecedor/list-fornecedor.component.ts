@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { Router } from '@angular/router'
 import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
 import { SituacaoFornecedorEnum } from '@models/enums/situacao-fornecedor.enum'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
@@ -32,7 +33,8 @@ import { FornecedorFilter } from './../../../../models/dto/filters/fornecedor-fi
 })
 export class ListFornecedorComponent {
     fornecedorStore = inject(FornecedorStore)
-    fb = inject(FormBuilder)
+	fb = inject(FormBuilder)
+	router = inject(Router)
     fornecedores!: FornecedorResponse[]
     options: any[] = [
         { label: 'Ativo', value: SituacaoFornecedorEnum.ATIVO },
@@ -61,7 +63,7 @@ export class ListFornecedorComponent {
     }
 
     editarFornecedor(fornecedor: FornecedorResponse) {
-        console.log(fornecedor)
+        this.router.navigate(['/fornecedores/form', fornecedor.id])
     }
 
     limpar() {

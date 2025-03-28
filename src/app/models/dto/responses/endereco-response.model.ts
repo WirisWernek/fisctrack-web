@@ -1,5 +1,5 @@
 export interface EnderecoResponse {
-	// cep: string
+	cep: string
 	id: number
     rua: string
     numero: string
