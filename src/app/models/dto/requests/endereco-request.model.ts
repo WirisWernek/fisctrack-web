@@ -1,5 +1,5 @@
 export interface EnderecoRequest {
-    // cep: string
+    cep: string
     rua: string
     numero: string
     bairro: string
