@@ -46,7 +46,7 @@ export class ListProdutoComponent implements OnInit {
 
     constructor() {
         this.form = this.fb.group({
-            id: [''],
+            id: [null],
             descricao: [''],
             situacao: [''],
         })

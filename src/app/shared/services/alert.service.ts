@@ -11,7 +11,7 @@ export class AlertService {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: message })
     }
 
-    showError(error: string[]) {
+    showError(...error: string[]) {
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: error.join(', ') })
     }
 }

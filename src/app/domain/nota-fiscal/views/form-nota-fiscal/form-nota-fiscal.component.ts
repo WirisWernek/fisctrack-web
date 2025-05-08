@@ -1,12 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
+import { NotaFiscalItemRequest } from '@models/dto/requests/nota-fiscal-item-request.model'
 import { NotaFiscalRequest } from '@models/dto/requests/nota-fiscal-request.model'
 import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
 import { NotaFiscalResponse } from '@models/dto/responses/nota-fiscal-response.model'
+import { ProdutoResponse } from '@models/dto/responses/produto-reponse.model'
 import { AlertService } from '@shared/services/alert.service'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
 import { NotaFiscalStore } from '@shared/stores/nota-fiscal.store'
+import { ProdutoStore } from '@shared/stores/produto.store'
 import { ButtonModule } from 'primeng/button'
 import { InputMaskModule } from 'primeng/inputmask'
 import { InputNumberModule } from 'primeng/inputnumber'
@@ -35,12 +38,15 @@ import { ToastModule } from 'primeng/toast'
 })
 export class FormNotaFiscalComponent implements OnInit {
     form: FormGroup
+    formItems: FormGroup
     fb = inject(FormBuilder)
     notaFiscalStore = inject(NotaFiscalStore)
     fornecedorStore = inject(FornecedorStore)
+    produtoStore = inject(ProdutoStore)
     alertService = inject(AlertService)
 
     fornecedoresOption: any[] = []
+    produtosOption: any[] = []
     router = inject(Router)
     route = inject(ActivatedRoute)
 
@@ -60,6 +66,13 @@ export class FormNotaFiscalComponent implements OnInit {
             estado: ['', Validators.required],
             pais: ['', Validators.required],
             cep: ['', Validators.required],
+            itens: [[], Validators.required],
+        })
+
+        this.formItems = this.fb.group({
+            produto: [null],
+            quantidade: [null],
+            valorUnitario: [null],
         })
     }
     ngOnInit(): void {
@@ -70,6 +83,20 @@ export class FormNotaFiscalComponent implements OnInit {
             this.fornecedorStore.getAllFornecedores().subscribe({
                 next: (value) => {
                     this.fornecedoresOption = value.map((fornecedor) => ({ label: fornecedor.razaoSocial, value: fornecedor.id }))
+                },
+                error: (err) => {
+                    this.alertService.showError(err.error.errors)
+                },
+            })
+        }
+
+        let produtos = this.route.snapshot.data['produtos'] as ProdutoResponse[]
+        if (produtos) {
+            this.produtosOption = produtos.map((produto) => ({ label: produto.descricao, value: produto.id }))
+        } else {
+            this.produtoStore.getAllProdutos().subscribe({
+                next: (value) => {
+                    this.produtosOption = value.map((produto) => ({ label: produto.descricao, value: produto.id }))
                 },
                 error: (err) => {
                     this.alertService.showError(err.error.errors)
@@ -91,6 +118,14 @@ export class FormNotaFiscalComponent implements OnInit {
                     estado: this.notaFiscal.endereco.estado,
                     pais: this.notaFiscal.endereco.pais,
                     cep: this.notaFiscal.endereco.cep,
+                    itens: this.notaFiscal.itens.map((item) => {
+                        return {
+                            produtoId: item.produto.id,
+                            produtoDescricao: item.produto.descricao,
+                            quantidade: item.quantidade,
+                            valorUnitario: item.valorUnitario,
+                        } as NotaFiscalItemRequest
+                    }),
                 },
                 { emitEvent: false }
             )
@@ -141,6 +176,14 @@ export class FormNotaFiscalComponent implements OnInit {
                 pais: data.pais,
                 cep: data.cep,
             },
+            itens: data.itens.map((item: NotaFiscalItemRequest) => {
+                return {
+                    produtoId: item.produtoId,
+                    produtoDescricao: item.produtoDescricao,
+                    quantidade: item.quantidade,
+                    valorUnitario: item.valorUnitario,
+                } as NotaFiscalItemRequest
+            }),
         } as NotaFiscalRequest
 
         this.notaFiscalStore.updateNotaFiscal(this.notaFiscal!.id, notaFicalRequest).subscribe({
@@ -152,6 +195,54 @@ export class FormNotaFiscalComponent implements OnInit {
                 this.alertService.showSuccess('Nota Fiscal atualizada com sucesso')
             },
         })
+    }
+
+    adicionarItemNotaFiscal() {
+        const data = this.formItems.getRawValue()
+        const notaFicalItem = {
+            produtoId: data.produto.value,
+            produtoDescricao: data.produto.label,
+            quantidade: data.quantidade,
+            valorUnitario: data.valorUnitario,
+        } as NotaFiscalItemRequest
+
+        if (this.verificaItem(notaFicalItem)) {
+            this.alertService.showError('Produto já adicionado')
+            return
+        }
+
+        this.form.patchValue({
+            itens: [...this.form.getRawValue().itens, notaFicalItem],
+        })
+        this.formItems.reset()
+        this.calcularTotal()
+    }
+
+    removerItemNotaFiscal(item: NotaFiscalItemRequest) {
+        const itens = this.form.getRawValue().itens.filter((i: NotaFiscalItemRequest) => i !== item)
+        this.form.patchValue({
+            itens: itens,
+        })
+        this.calcularTotal()
+    }
+
+    calcularTotal() {
+        const itens = this.form.getRawValue().itens
+        const total = itens.reduce((acc: number, item: NotaFiscalItemRequest) => {
+            return acc + item.quantidade * item.valorUnitario
+        }, 0)
+        this.form.patchValue({
+            total: total,
+        })
+    }
+
+    verificaItem(item: NotaFiscalItemRequest) {
+        const itens = this.form.getRawValue().itens
+        const itemEncontrado = itens.find((i: NotaFiscalItemRequest) => i.produtoId === item.produtoId)
+        if (itemEncontrado) {
+            return true
+        }
+        return false
     }
 
     limpar() {
