@@ -72,6 +72,23 @@ export class FormFornecedorComponent implements OnInit {
             console.log('Fornecedor cadastrado com sucesso')
         })
 	}
+
+	editar() {
+		const data = this.form.getRawValue()
+		const fornecedorRequest = {
+			id: this.fornecedor?.id,
+			razaoSocial: data.razaoSocial,
+			cnpj: data.cnpj,
+			telefone: data.telefone,
+			email: data.email,
+			situacao: SituacaoFornecedorEnum[data.situacao.value as keyof typeof SituacaoFornecedorEnum],
+		} as FornecedorRequest
+
+		this.fornecedorStore.updateFornecedor(this.fornecedor!.id, fornecedorRequest).subscribe(() => {
+			this.router.navigate(['/fornecedores'])
+			console.log('Fornecedor editado com sucesso')
+		})
+	}
 	
     limpar() {
         this.form.reset()

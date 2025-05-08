@@ -40,7 +40,11 @@
         </div>
         <div class="flex flex-row gap-2 flex-1"></div>
         <div class="flex flex-row gap-2 w-full">
-            <p-button label="Cadastrar" [fluid]="true" [raised]="true" (click)="cadastrar()" />
+			@if(fornecedor?.id){
+				<p-button label="Editar" [fluid]="true" [raised]="true" (click)="editar()" />
+			} @else{
+				<p-button label="Cadastrar" [fluid]="true" [raised]="true" (click)="cadastrar()" />
+            }
             <p-button label="Limpar" [raised]="true" severity="warn" (click)="limpar()" />
             <p-button label="Voltar" [fluid]="true" [raised]="true" severity="secondary" (click)="voltar()" />
         </div>

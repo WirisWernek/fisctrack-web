@@ -115,7 +115,31 @@ export class FormNotaFiscalComponent implements OnInit {
             this.router.navigate(['/notas-fiscais'])
             console.log('Nota Fiscal cadastrada com sucesso')
         })
-    }
+	}
+	
+	editar() { 
+		const data = this.form.getRawValue()
+		const notaFicalRequest = {
+			id: this.notaFiscal?.id,
+			numeroNota: data.numeroNota,
+			total: data.total,
+			fornecedorId: data.fornecedor.value,
+			endereco: {
+				rua: data.rua,
+				numero: data.numero,
+				bairro: data.bairro,
+				cidade: data.cidade,
+				estado: data.estado,
+				pais: data.pais,
+				cep: data.cep,
+			},
+		} as NotaFiscalRequest
+
+		this.notaFiscalStore.updateNotaFiscal(this.notaFiscal!.id, notaFicalRequest).subscribe(() => {
+			this.router.navigate(['/notas-fiscais'])
+			console.log('Nota Fiscal editada com sucesso')
+		})
+	}
 
     limpar() {
         this.form.reset()

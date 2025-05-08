@@ -34,8 +34,8 @@ export class FormProdutoComponent implements OnInit {
             descricao: ['', Validators.required],
             situacao: ['', Validators.required],
         })
-	}
-	
+    }
+
     ngOnInit(): void {
         debugger
         this.produto = this.route.snapshot.data['produto'] as ProdutoResponse
@@ -60,9 +60,22 @@ export class FormProdutoComponent implements OnInit {
             this.router.navigate(['/produtos'])
             console.log('Produto cadastrado com sucesso')
         })
-	}
-	
-	limpar() {
+    }
+
+    editar() {
+        const data = this.form.getRawValue()
+        const produtoRequest = {
+            id: this.produto?.id,
+            descricao: data.descricao,
+            situacao: SituacaoProdutoEnum[data.situacao.value as keyof typeof SituacaoProdutoEnum],
+        } as ProdutoRequest
+        this.produtoStore.updateProduto(this.produto!.id, produtoRequest).subscribe(() => {
+            this.router.navigate(['/produtos'])
+            console.log('Produto editado com sucesso')
+        })
+    }
+
+    limpar() {
         this.form.reset()
     }
 
