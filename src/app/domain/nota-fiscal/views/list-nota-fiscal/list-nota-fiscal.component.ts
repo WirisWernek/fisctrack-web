@@ -17,6 +17,7 @@ import { FornecedorStore } from './../../../../shared/stores/fornecedor.store'
 
 import localePt from '@angular/common/locales/pt'
 import { Router } from '@angular/router'
+import { AlertService } from '@shared/services/alert.service'
 
 registerLocaleData(localePt)
 
@@ -42,6 +43,7 @@ registerLocaleData(localePt)
 export class ListNotaFiscalComponent {
     notaFiscaltore = inject(NotaFiscalStore)
     fornecedorStore = inject(FornecedorStore)
+    alertService = inject(AlertService)
     router = inject(Router)
     fb = inject(FormBuilder)
     notasFiscais!: NotaFiscalResponse[]
@@ -65,8 +67,9 @@ export class ListNotaFiscalComponent {
                     return { label: f.razaoSocial, value: f.id }
                 })
             },
-            error: (err) => {},
-            complete: () => {},
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
         })
 
         this.pesquisar()
@@ -95,8 +98,9 @@ export class ListNotaFiscalComponent {
             next: (value) => {
                 this.notasFiscais = value
             },
-            error: (err) => {},
-            complete: () => {},
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
         })
     }
 

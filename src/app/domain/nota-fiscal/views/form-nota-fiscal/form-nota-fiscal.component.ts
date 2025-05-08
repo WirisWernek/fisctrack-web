@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { NotaFiscalRequest } from '@models/dto/requests/nota-fiscal-request.model'
 import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
 import { NotaFiscalResponse } from '@models/dto/responses/nota-fiscal-response.model'
+import { AlertService } from '@shared/services/alert.service'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
 import { NotaFiscalStore } from '@shared/stores/nota-fiscal.store'
 import { ButtonModule } from 'primeng/button'
@@ -37,6 +38,7 @@ export class FormNotaFiscalComponent implements OnInit {
     fb = inject(FormBuilder)
     notaFiscalStore = inject(NotaFiscalStore)
     fornecedorStore = inject(FornecedorStore)
+    alertService = inject(AlertService)
 
     fornecedoresOption: any[] = []
     router = inject(Router)
@@ -69,8 +71,9 @@ export class FormNotaFiscalComponent implements OnInit {
                 next: (value) => {
                     this.fornecedoresOption = value.map((fornecedor) => ({ label: fornecedor.razaoSocial, value: fornecedor.id }))
                 },
-                error: (err) => {},
-                complete: () => {},
+                error: (err) => {
+                    this.alertService.showError(err.error.errors)
+                },
             })
         }
 
@@ -111,35 +114,45 @@ export class FormNotaFiscalComponent implements OnInit {
             },
         } as NotaFiscalRequest
 
-        this.notaFiscalStore.createNotaFiscal(notaFicalRequest).subscribe(() => {
-            this.router.navigate(['/notas-fiscais'])
-            console.log('Nota Fiscal cadastrada com sucesso')
+        this.notaFiscalStore.createNotaFiscal(notaFicalRequest).subscribe({
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
+            complete: () => {
+                this.router.navigate(['/notas-fiscais'])
+                this.alertService.showSuccess('Nota Fiscal cadastrada com sucesso')
+            },
         })
-	}
-	
-	editar() { 
-		const data = this.form.getRawValue()
-		const notaFicalRequest = {
-			id: this.notaFiscal?.id,
-			numeroNota: data.numeroNota,
-			total: data.total,
-			fornecedorId: data.fornecedor.value,
-			endereco: {
-				rua: data.rua,
-				numero: data.numero,
-				bairro: data.bairro,
-				cidade: data.cidade,
-				estado: data.estado,
-				pais: data.pais,
-				cep: data.cep,
-			},
-		} as NotaFiscalRequest
+    }
 
-		this.notaFiscalStore.updateNotaFiscal(this.notaFiscal!.id, notaFicalRequest).subscribe(() => {
-			this.router.navigate(['/notas-fiscais'])
-			console.log('Nota Fiscal editada com sucesso')
-		})
-	}
+    editar() {
+        const data = this.form.getRawValue()
+        const notaFicalRequest = {
+            id: this.notaFiscal?.id,
+            numeroNota: data.numeroNota,
+            total: data.total,
+            fornecedorId: data.fornecedor.value,
+            endereco: {
+                rua: data.rua,
+                numero: data.numero,
+                bairro: data.bairro,
+                cidade: data.cidade,
+                estado: data.estado,
+                pais: data.pais,
+                cep: data.cep,
+            },
+        } as NotaFiscalRequest
+
+        this.notaFiscalStore.updateNotaFiscal(this.notaFiscal!.id, notaFicalRequest).subscribe({
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
+            complete: () => {
+                this.router.navigate(['/notas-fiscais'])
+                this.alertService.showSuccess('Nota Fiscal atualizada com sucesso')
+            },
+        })
+    }
 
     limpar() {
         this.form.reset()

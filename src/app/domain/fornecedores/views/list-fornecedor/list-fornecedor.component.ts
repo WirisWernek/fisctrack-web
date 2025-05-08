@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { Router } from '@angular/router'
 import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
 import { SituacaoFornecedorEnum } from '@models/enums/situacao-fornecedor.enum'
+import { AlertService } from '@shared/services/alert.service'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
 import { ButtonModule } from 'primeng/button'
 import { InputMaskModule } from 'primeng/inputmask'
@@ -33,6 +34,7 @@ import { FornecedorFilter } from './../../../../models/dto/filters/fornecedor-fi
 })
 export class ListFornecedorComponent {
     fornecedorStore = inject(FornecedorStore)
+    alertService = inject(AlertService)
     fb = inject(FormBuilder)
     router = inject(Router)
     fornecedores!: FornecedorResponse[]
@@ -68,21 +70,23 @@ export class ListFornecedorComponent {
 
     excluirFornecedor(fornecedor: FornecedorResponse) {
         this.fornecedorStore.deleteFornecedor(fornecedor.id).subscribe({
-            next: () => {
+            complete: () => {
                 this.pesquisar()
             },
-            error: (err) => {},
-            complete: () => {},
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
         })
     }
 
     baixarFornecedor(fornecedor: FornecedorResponse) {
         this.fornecedorStore.baixarFornecedor(fornecedor.id).subscribe({
-            next: () => {
+            complete: () => {
                 this.pesquisar()
             },
-            error: (err) => {},
-            complete: () => {},
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
         })
     }
 
@@ -107,8 +111,9 @@ export class ListFornecedorComponent {
             next: (value) => {
                 this.fornecedores = value
             },
-            error: (err) => {},
-            complete: () => {},
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
         })
     }
 }

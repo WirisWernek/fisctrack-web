@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { FornecedorRequest } from '@models/dto/requests/fornecedor-request.model'
 import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
 import { SituacaoFornecedorEnum } from '@models/enums/situacao-fornecedor.enum'
+import { AlertService } from '@shared/services/alert.service'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
 import { ButtonModule } from 'primeng/button'
 import { InputMaskModule } from 'primeng/inputmask'
@@ -20,6 +21,7 @@ export class FormFornecedorComponent implements OnInit {
     form: FormGroup
     fb = inject(FormBuilder)
     fornecedorStore = inject(FornecedorStore)
+    alertService = inject(AlertService)
     router = inject(Router)
     route = inject(ActivatedRoute)
 
@@ -67,9 +69,14 @@ export class FormFornecedorComponent implements OnInit {
             situacao: SituacaoFornecedorEnum[data.situacao.value as keyof typeof SituacaoFornecedorEnum],
         } as FornecedorRequest
 
-        this.fornecedorStore.createFornecedor(fornecedorRequest).subscribe(() => {
-            this.router.navigate(['/fornecedores'])
-            console.log('Fornecedor cadastrado com sucesso')
+        this.fornecedorStore.createFornecedor(fornecedorRequest).subscribe({
+            error: (err) => {	
+                this.alertService.showError(err.error.errors)
+            },
+            complete: () => {
+                this.router.navigate(['/fornecedores'])
+                this.alertService.showSuccess('Fornecedor cadastrado com sucesso')
+            },
         })
     }
 
@@ -84,9 +91,14 @@ export class FormFornecedorComponent implements OnInit {
             situacao: SituacaoFornecedorEnum[data.situacao.value as keyof typeof SituacaoFornecedorEnum],
         } as FornecedorRequest
 
-        this.fornecedorStore.updateFornecedor(this.fornecedor!.id, fornecedorRequest).subscribe(() => {
-            this.router.navigate(['/fornecedores'])
-            console.log('Fornecedor editado com sucesso')
+        this.fornecedorStore.updateFornecedor(this.fornecedor!.id, fornecedorRequest).subscribe({
+            error: (err) => {	
+                this.alertService.showError(err.error.errors)
+            },
+            complete: () => {
+                this.router.navigate(['/fornecedores'])
+                this.alertService.showSuccess('Fornecedor atualizado com sucesso')
+            },
         })
     }
 

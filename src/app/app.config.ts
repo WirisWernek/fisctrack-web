@@ -5,6 +5,7 @@ import Material from '@primeng/themes/material';
 import { providePrimeNG } from 'primeng/config';
 
 import { provideHttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
 					
 				}
 			}
-		})
+		}),
+		MessageService	
 	]
 };

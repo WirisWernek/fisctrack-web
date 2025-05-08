@@ -4,6 +4,7 @@ import { Router } from '@angular/router'
 import { ProdutoFilter } from '@models/dto/filters/produto-filter.model'
 import { ProdutoResponse } from '@models/dto/responses/produto-reponse.model'
 import { SituacaoProdutoEnum } from '@models/enums/situacao-produto.enum'
+import { AlertService } from '@shared/services/alert.service'
 import { ProdutoStore } from '@shared/stores/produto.store'
 import { ButtonModule } from 'primeng/button'
 import { InputNumberModule } from 'primeng/inputnumber'
@@ -32,6 +33,7 @@ import { ToastModule } from 'primeng/toast'
 })
 export class ListProdutoComponent implements OnInit {
     produtoStore = inject(ProdutoStore)
+    alertService = inject(AlertService)
     router = inject(Router)
     fb = inject(FormBuilder)
     produtos!: ProdutoResponse[]
@@ -55,8 +57,9 @@ export class ListProdutoComponent implements OnInit {
             next: (value) => {
                 this.produtos = value
             },
-            error: (err) => {},
-            complete: () => {},
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
         })
     }
 
@@ -66,21 +69,25 @@ export class ListProdutoComponent implements OnInit {
 
     excluirProduto(produto: ProdutoResponse) {
         this.produtoStore.deleteProduto(produto.id).subscribe({
-            next: () => {
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
+            complete: () => {
+                this.alertService.showSuccess('Produto excluído com sucesso')
                 this.pesquisar()
             },
-            error: (err) => {},
-            complete: () => {},
         })
     }
 
     alterarSituacao(produto: ProdutoResponse) {
         this.produtoStore.atualizarSituacao(produto.id).subscribe({
-            next: () => {
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
+            complete: () => {
+                this.alertService.showSuccess('Produto atualizado com sucesso')
                 this.pesquisar()
             },
-            error: (err) => {},
-            complete: () => {},
         })
     }
 
@@ -105,8 +112,9 @@ export class ListProdutoComponent implements OnInit {
             next: (value) => {
                 this.produtos = value
             },
-            error: (err) => {},
-            complete: () => {},
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
         })
     }
 }

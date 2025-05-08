@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router } from '@angular/router'
 import { ProdutoResponse } from '@models/dto/responses/produto-reponse.model'
 import { SituacaoProdutoEnum } from '@models/enums/situacao-produto.enum'
+import { AlertService } from '@shared/services/alert.service'
 import { ProdutoStore } from '@shared/stores/produto.store'
 import { ButtonModule } from 'primeng/button'
 import { InputTextModule } from 'primeng/inputtext'
@@ -21,6 +22,7 @@ export class FormProdutoComponent implements OnInit {
     router = inject(Router)
     route = inject(ActivatedRoute)
     produtoStore = inject(ProdutoStore)
+    alertService = inject(AlertService)
 
     produto?: ProdutoResponse
 
@@ -55,9 +57,14 @@ export class FormProdutoComponent implements OnInit {
             descricao: data.descricao,
             situacao: SituacaoProdutoEnum[data.situacao.value as keyof typeof SituacaoProdutoEnum],
         } as ProdutoRequest
-        this.produtoStore.createProduto(produtoRequest).subscribe(() => {
-            this.router.navigate(['/produtos'])
-            console.log('Produto cadastrado com sucesso')
+        this.produtoStore.createProduto(produtoRequest).subscribe({
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
+            complete: () => {
+                this.alertService.showSuccess('Produto cadastrado com sucesso')
+                this.router.navigate(['/produtos'])
+            },
         })
     }
 
@@ -68,9 +75,14 @@ export class FormProdutoComponent implements OnInit {
             descricao: data.descricao,
             situacao: SituacaoProdutoEnum[data.situacao.value as keyof typeof SituacaoProdutoEnum],
         } as ProdutoRequest
-        this.produtoStore.updateProduto(this.produto!.id, produtoRequest).subscribe(() => {
-            this.router.navigate(['/produtos'])
-            console.log('Produto editado com sucesso')
+        this.produtoStore.updateProduto(this.produto!.id, produtoRequest).subscribe({
+            error: (err) => {
+                this.alertService.showError(err.error.errors)
+            },
+            complete: () => {
+				this.alertService.showSuccess('Produto editado com sucesso')
+				this.router.navigate(['/produtos'])
+            },
         })
     }
 
