@@ -50,7 +50,9 @@ export class FormNotaFiscalComponent implements OnInit {
     router = inject(Router)
     route = inject(ActivatedRoute)
 
-    notaFiscal?: NotaFiscalResponse
+	notaFiscal?: NotaFiscalResponse
+	
+	 mode: string = 'Cadastrar'
 
     constructor() {
         this.form = this.fb.group({
@@ -105,7 +107,8 @@ export class FormNotaFiscalComponent implements OnInit {
         }
 
         this.notaFiscal = this.route.snapshot.data['notaFiscal'] as NotaFiscalResponse
-        if (this.notaFiscal) {
+		if (this.notaFiscal) {
+			this.mode = 'Editar'
             this.form.patchValue(
                 {
                     numeroNota: this.notaFiscal.numeroNota,

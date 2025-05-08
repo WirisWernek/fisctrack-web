@@ -26,6 +26,7 @@ export class FormProdutoComponent implements OnInit {
 
     produto?: ProdutoResponse
 
+    mode: string = 'Cadastrar'
     options: any[] = [
         { label: 'Ativo', value: SituacaoProdutoEnum.ATIVO },
         { label: 'Inativo', value: SituacaoProdutoEnum.INATIVO },
@@ -41,6 +42,7 @@ export class FormProdutoComponent implements OnInit {
     ngOnInit(): void {
         this.produto = this.route.snapshot.data['produto'] as ProdutoResponse
         if (this.produto) {
+            this.mode = 'Editar'
             this.form.patchValue(
                 {
                     descricao: this.produto.descricao,
@@ -80,8 +82,8 @@ export class FormProdutoComponent implements OnInit {
                 this.alertService.showError(err.error.errors)
             },
             complete: () => {
-				this.alertService.showSuccess('Produto editado com sucesso')
-				this.router.navigate(['/produtos'])
+                this.alertService.showSuccess('Produto editado com sucesso')
+                this.router.navigate(['/produtos'])
             },
         })
     }

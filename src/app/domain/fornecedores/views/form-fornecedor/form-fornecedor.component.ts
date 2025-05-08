@@ -27,6 +27,7 @@ export class FormFornecedorComponent implements OnInit {
 
     fornecedor?: FornecedorResponse
 
+    mode: string = 'Cadastrar'
     options: any[] = [
         { label: 'Ativo', value: SituacaoFornecedorEnum.ATIVO },
         { label: 'Suspenso', value: SituacaoFornecedorEnum.SUSPENSO },
@@ -46,6 +47,7 @@ export class FormFornecedorComponent implements OnInit {
     ngOnInit(): void {
         this.fornecedor = this.route.snapshot.data['fornecedor'] as FornecedorResponse
         if (this.fornecedor) {
+            this.mode = 'Editar'
             this.form.patchValue(
                 {
                     razaoSocial: this.fornecedor.razaoSocial,
@@ -70,7 +72,7 @@ export class FormFornecedorComponent implements OnInit {
         } as FornecedorRequest
 
         this.fornecedorStore.createFornecedor(fornecedorRequest).subscribe({
-            error: (err) => {	
+            error: (err) => {
                 this.alertService.showError(err.error.errors)
             },
             complete: () => {
@@ -92,7 +94,7 @@ export class FormFornecedorComponent implements OnInit {
         } as FornecedorRequest
 
         this.fornecedorStore.updateFornecedor(this.fornecedor!.id, fornecedorRequest).subscribe({
-            error: (err) => {	
+            error: (err) => {
                 this.alertService.showError(err.error.errors)
             },
             complete: () => {

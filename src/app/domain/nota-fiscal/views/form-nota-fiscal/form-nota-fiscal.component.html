@@ -1,139 +1,145 @@
 <main class="flex justify-center flex-col items-center w-full gap-8">
-    <form [formGroup]="form" class="flex flex-col gap-4 w-[90%] lg:w-[60%] border rounded-lg border-emerald-300 p-2">
-        <div class="flex flex-row gap-2 flex-1">
-            <div class="flex flex-col gap-2 flex-2">
-                <label for="numeroNota">Numero da Nota</label>
-                <p-inputmask
-                    mask="999.999.999"
-                    [autoClear]="false"
-                    id="numeroNota"
-                    placeholder="Digite o numero da nota"
-                    unmask="true"
-                    formControlName="numeroNota"
-                    class="w-full"
-                />
+    <fieldset class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-4">
+        <legend class="text-lg font-bold">{{ mode }} Nota Fiscal</legend>
+        <form [formGroup]="form" class="flex flex-col gap-4 w-full">
+            <div class="flex flex-row gap-2 flex-1">
+                <div class="flex flex-col gap-2 flex-2">
+                    <label for="numeroNota">Numero da Nota</label>
+                    <p-inputmask
+                        mask="999.999.999"
+                        [autoClear]="false"
+                        id="numeroNota"
+                        placeholder="Digite o numero da nota"
+                        unmask="true"
+                        formControlName="numeroNota"
+                        class="w-full"
+                    />
+                </div>
+                <div class="flex flex-col gap-2 flex-2">
+                    <label for="total">Total</label>
+                    <p-inputnumber inputId="decimal" placeholder="Digite o total" id="total" formControlName="total" />
+                </div>
+                <div class="flex flex-col gap-2 flex-1">
+                    <label for="fornecedor">Fornecedor</label>
+                    <p-select
+                        id="fornecedor"
+                        formControlName="fornecedor"
+                        [options]="fornecedoresOption"
+                        optionLabel="label"
+                        placeholder="Selecione uma situação"
+                        class="w-full"
+                    />
+                </div>
             </div>
-            <div class="flex flex-col gap-2 flex-2">
-                <label for="total">Total</label>
-                <p-inputnumber inputId="decimal" placeholder="Digite o total" id="total" formControlName="total" />
+            <div class="flex flex-row gap-2 flex-1">
+                <div class="flex flex-col gap-2 flex-2">
+                    <label for="cep">CEP</label>
+                    <p-inputmask
+                        mask="99999-999"
+                        [autoClear]="false"
+                        id="cep"
+                        placeholder="Digite o CEP"
+                        unmask="true"
+                        formControlName="cep"
+                        class="w-full"
+                    />
+                </div>
+                <div class="flex flex-col gap-2 flex-1">
+                    <label for="rua">Rua</label>
+                    <input pInputText id="rua" formControlName="rua" placeholder="Digite a rua" />
+                </div>
+                <div class="flex flex-col gap-2 flex-2">
+                    <label for="numero">Número</label>
+                    <p-inputnumber inputId="decimal" placeholder="Digite o total" id="numero" formControlName="numero" />
+                </div>
+                <div class="flex flex-col gap-2 flex-1">
+                    <label for="bairro">Bairro</label>
+                    <input pInputText id="bairro" formControlName="bairro" placeholder="Digite o bairro" />
+                </div>
             </div>
-            <div class="flex flex-col gap-2 flex-1">
-                <label for="fornecedor">Fornecedor</label>
-                <p-select
-                    id="fornecedor"
-                    formControlName="fornecedor"
-                    [options]="fornecedoresOption"
-                    optionLabel="label"
-                    placeholder="Selecione uma situação"
-                    class="w-full"
-                />
+            <div class="flex flex-row gap-2 flex-1">
+                <div class="flex flex-col gap-2 flex-1">
+                    <label for="cidade">Cidade</label>
+                    <input pInputText id="cidade" formControlName="cidade" placeholder="Digite a cidade" />
+                </div>
+                <div class="flex flex-col gap-2 flex-1">
+                    <label for="estado">Estado</label>
+                    <input pInputText id="estado" formControlName="estado" placeholder="Digite o Estado" />
+                </div>
+                <div class="flex flex-col gap-2 flex-1">
+                    <label for="pais">País</label>
+                    <input pInputText id="pais" formControlName="pais" placeholder="Digite o país" />
+                </div>
             </div>
-        </div>
-        <div class="flex flex-row gap-2 flex-1">
-            <div class="flex flex-col gap-2 flex-2">
-                <label for="cep">CEP</label>
-                <p-inputmask
-                    mask="99999-999"
-                    [autoClear]="false"
-                    id="cep"
-                    placeholder="Digite o CEP"
-                    unmask="true"
-                    formControlName="cep"
-                    class="w-full"
-                />
+            <div class="flex flex-row gap-2 flex-1"></div>
+            <div class="flex flex-row gap-2 w-full">
+                @if(notaFiscal?.id){
+                <p-button label="Editar" [fluid]="true" [raised]="true" (click)="editar()" />
+                } @else{
+                <p-button label="Cadastrar" [fluid]="true" [raised]="true" (click)="cadastrar()" />
+                }
+                <p-button label="Limpar" [raised]="true" severity="warn" (click)="limpar()" />
+                <p-button label="Voltar" [fluid]="true" [raised]="true" severity="secondary" (click)="voltar()" />
             </div>
-            <div class="flex flex-col gap-2 flex-1">
-                <label for="rua">Rua</label>
-                <input pInputText id="rua" formControlName="rua" placeholder="Digite a rua" />
-            </div>
-            <div class="flex flex-col gap-2 flex-2">
-                <label for="numero">Número</label>
-                <p-inputnumber inputId="decimal" placeholder="Digite o total" id="numero" formControlName="numero" />
-            </div>
-            <div class="flex flex-col gap-2 flex-1">
-                <label for="bairro">Bairro</label>
-                <input pInputText id="bairro" formControlName="bairro" placeholder="Digite o bairro" />
-            </div>
-        </div>
-        <div class="flex flex-row gap-2 flex-1">
-            <div class="flex flex-col gap-2 flex-1">
-                <label for="cidade">Cidade</label>
-                <input pInputText id="cidade" formControlName="cidade" placeholder="Digite a cidade" />
-            </div>
-            <div class="flex flex-col gap-2 flex-1">
-                <label for="estado">Estado</label>
-                <input pInputText id="estado" formControlName="estado" placeholder="Digite o Estado" />
-            </div>
-            <div class="flex flex-col gap-2 flex-1">
-                <label for="pais">País</label>
-                <input pInputText id="pais" formControlName="pais" placeholder="Digite o país" />
-            </div>
-        </div>
-        <div class="flex flex-row gap-2 flex-1"></div>
-        <div class="flex flex-row gap-2 w-full">
-            @if(notaFiscal?.id){
-            	<p-button label="Editar" [fluid]="true" [raised]="true" (click)="editar()" />
-            } @else{
-            	<p-button label="Cadastrar" [fluid]="true" [raised]="true" (click)="cadastrar()" />
-            }
-            <p-button label="Limpar" [raised]="true" severity="warn" (click)="limpar()" />
-            <p-button label="Voltar" [fluid]="true" [raised]="true" severity="secondary" (click)="voltar()" />
-        </div>
-    </form>
+        </form>
+    </fieldset>
 
-    <form [formGroup]="formItems" class="flex flex-col gap-4 w-[90%] lg:w-[60%] border rounded-lg border-emerald-300 p-2">
-        <section class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-full p-2">
-            <div class="flex flex-col gap-2 w-full lg:flex-2">
-                <label for="produto">Produto</label>
-                <p-select
-                    formControlName="produto"
-                    [options]="produtosOption"
-                    optionLabel="label"
-                    placeholder="Selecione uma situação"
-                    class="w-full"
-                    id="produto"
-                />
-            </div>
-            <div class="flex flex-col gap-2 w-full lg:flex-1">
-                <label for="quantidade">Quantidade</label>
-                <p-inputnumber inputId="integeronly" placeholder="Digite a quantidade" id="quantidade" formControlName="quantidade" />
-            </div>
-            <div class="flex flex-col gap-2 w-full lg:flex-1">
-                <label for="valorUnitario">Valor Unitário</label>
-                <p-inputnumber
-                    inputId="currency-brl"
-                    mode="currency"
-                    currency="BRL"
-                    placeholder="Digite o valor unitario"
-                    id="valorUnitario"
-                    formControlName="valorUnitario"
-                />
-            </div>
-            <div class="flex flex-row gap-2 w-full lg:flex-1">
-                <p-button label="Adicionar" (click)="adicionarItemNotaFiscal()" (onKeyPress)="adicionarItemNotaFiscal()" />
-            </div>
-        </section>
-        <section>
-            <p-table [value]="form.get('itens')?.value" [tableStyle]="{ 'min-width': '50rem' }">
-                <ng-template #header>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Quantidade</th>
-                        <th>Valor Unitário</th>
-                        <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template #body let-itemNota>
-                    <tr>
-                        <td>{{ itemNota.produtoDescricao }}</td>
-                        <td>{{ itemNota.quantidade }}</td>
-                        <td>{{ itemNota.valorUnitario }}</td>
-                        <td class="flex justify-center gap-2">
-                            <p-button icon="pi pi-trash" (click)="removerItemNotaFiscal(itemNota)" severity="danger" rounded />
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </section>
-    </form>
+    <fieldset class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-4">
+        <legend class="text-lg font-bold">Itens da Nota</legend>
+        <form [formGroup]="formItems" class="flex flex-col gap-4 w-full">
+            <section class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-full p-2">
+                <div class="flex flex-col gap-2 w-full lg:flex-2">
+                    <label for="produto">Produto</label>
+                    <p-select
+                        formControlName="produto"
+                        [options]="produtosOption"
+                        optionLabel="label"
+                        placeholder="Selecione uma situação"
+                        class="w-full"
+                        id="produto"
+                    />
+                </div>
+                <div class="flex flex-col gap-2 w-full lg:flex-1">
+                    <label for="quantidade">Quantidade</label>
+                    <p-inputnumber inputId="integeronly" placeholder="Digite a quantidade" id="quantidade" formControlName="quantidade" />
+                </div>
+                <div class="flex flex-col gap-2 w-full lg:flex-1">
+                    <label for="valorUnitario">Valor Unitário</label>
+                    <p-inputnumber
+                        inputId="currency-brl"
+                        mode="currency"
+                        currency="BRL"
+                        placeholder="Digite o valor unitario"
+                        id="valorUnitario"
+                        formControlName="valorUnitario"
+                    />
+                </div>
+                <div class="flex flex-row gap-2 w-full lg:flex-1">
+                    <p-button label="Adicionar" (click)="adicionarItemNotaFiscal()" (onKeyPress)="adicionarItemNotaFiscal()" />
+                </div>
+            </section>
+            <section>
+                <p-table [value]="form.get('itens')?.value" [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template #header>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário</th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-itemNota>
+                        <tr>
+                            <td>{{ itemNota.produtoDescricao }}</td>
+                            <td>{{ itemNota.quantidade }}</td>
+                            <td>{{ itemNota.valorUnitario }}</td>
+                            <td class="flex justify-center gap-2">
+                                <p-button icon="pi pi-trash" (click)="removerItemNotaFiscal(itemNota)" severity="danger" rounded />
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </section>
+        </form>
+    </fieldset>
 </main>

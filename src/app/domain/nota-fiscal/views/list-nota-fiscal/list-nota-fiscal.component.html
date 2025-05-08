@@ -1,65 +1,66 @@
 <main class="flex justify-center flex-col items-center w-full gap-8">
-    <form
-        [formGroup]="form"
-        class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-2"
-    >
-        <div class="flex flex-col gap-2 w-full lg:flex-2">
-            <label for="fornecedor">Fornecedor</label>
-            <p-select
-                id="fornecedor"
-                formControlName="fornecedor"
-                [options]="fornecedoresOption"
-                optionLabel="label"
-                placeholder="Selecione uma situação"
-            />
-        </div>
-        <div class="flex flex-col gap-2 w-full lg:flex-1">
-            <label for="numeroNota">Numero da Nota</label>
-            <p-inputmask
-                mask="99.999.999/9999-99"
-                [autoClear]="false"
-                id="numeroNota"
-                placeholder="00.000.000/0000-00"
-                unmask="true"
-                formControlName="numeroNota"
-                class="w-full"
-            />
-        </div>
-        <div class="flex flex-row gap-2 w-full lg:flex-2">
-            <div class="flex flex-col gap-2 w-full lg:flex-1">
-                <label for="dataEmissaoInicio">Data Emissao Início</label>
-                <p-datepicker
-                    formControlName="dataEmissaoInicio"
-                    dateFormat="dd/mm/yy"
-                    id="dataEmissaoInicio"
-                    [iconDisplay]="'input'"
-                    [showIcon]="true"
-                    inputId="icondisplay"
-                    class="w-full"
-					placeholder="dd/mm/yyyy"
+    <fieldset class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-4">
+        <legend class="text-lg font-bold">Pesquisar Notas Fiscais</legend>
+        <form [formGroup]="form" class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-full">
+            <div class="flex flex-col gap-2 w-full lg:flex-2">
+                <label for="fornecedor">Fornecedor</label>
+                <p-select
+                    id="fornecedor"
+                    formControlName="fornecedor"
+                    [options]="fornecedoresOption"
+                    optionLabel="label"
+                    placeholder="Selecione uma situação"
                 />
             </div>
             <div class="flex flex-col gap-2 w-full lg:flex-1">
-                <label for="dataEmissaoFim">Data Emissao Fim</label>
-                <p-datepicker
-                    formControlName="dataEmissaoFim"
-                    dateFormat="dd/mm/yy"
-                    id="dataEmissaoFim"
-                    [iconDisplay]="'input'"
-                    [showIcon]="true"
-                    inputId="icondisplay"
+                <label for="numeroNota">Numero da Nota</label>
+                <p-inputmask
+                    mask="99.999.999/9999-99"
+                    [autoClear]="false"
+                    id="numeroNota"
+                    placeholder="00.000.000/0000-00"
+                    unmask="true"
+                    formControlName="numeroNota"
                     class="w-full"
-					placeholder="dd/mm/yyyy"
                 />
             </div>
-        </div>
-        <div class="flex flex-row gap-2 flex-1">
-            <p-button label="Pesquisar" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
-            <p-button label="Limpar" [raised]="true" severity="warn" (click)="limpar()" (onKeyOPress)="limpar()" />
-        </div>
-    </form>
+            <div class="flex flex-row gap-2 w-full lg:flex-2">
+                <div class="flex flex-col gap-2 w-full lg:flex-1">
+                    <label for="dataEmissaoInicio">Data Emissao Início</label>
+                    <p-datepicker
+                        formControlName="dataEmissaoInicio"
+                        dateFormat="dd/mm/yy"
+                        id="dataEmissaoInicio"
+                        [iconDisplay]="'input'"
+                        [showIcon]="true"
+                        inputId="icondisplay"
+                        class="w-full"
+                        placeholder="dd/mm/yyyy"
+                    />
+                </div>
+                <div class="flex flex-col gap-2 w-full lg:flex-1">
+                    <label for="dataEmissaoFim">Data Emissao Fim</label>
+                    <p-datepicker
+                        formControlName="dataEmissaoFim"
+                        dateFormat="dd/mm/yy"
+                        id="dataEmissaoFim"
+                        [iconDisplay]="'input'"
+                        [showIcon]="true"
+                        inputId="icondisplay"
+                        class="w-full"
+                        placeholder="dd/mm/yyyy"
+                    />
+                </div>
+            </div>
+            <div class="flex flex-row gap-2 flex-1">
+                <p-button label="Pesquisar" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
+                <p-button label="Limpar" [raised]="true" severity="warn" (click)="limpar()" (onKeyOPress)="limpar()" />
+            </div>
+        </form>
+    </fieldset>
 
-    <section class="flex flex-col gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-2">
+    <fieldset class="flex flex-col lg:flex-row items-center lg:items-end gap-4 w-[90%] lg:w-[80%] border rounded-lg border-emerald-300 p-4">
+        <legend class="text-lg font-bold">Notas Fiscais Cadastradas</legend>
         <p-table [value]="notasFiscais" stripedRows [tableStyle]="{ 'min-width': '20rem', width: '100%', 'align-self': 'center' }" class="w-full">
             <ng-template #header>
                 <tr>
@@ -85,8 +86,5 @@
                 </tr>
             </ng-template>
         </p-table>
-    </section>
-	<div class="card flex justify-center">
-		<p-toast [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'1000ms'" [showTransformOptions]="'translateX(100%)'" />
-	</div>
+    </fieldset>
 </main>
