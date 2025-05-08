@@ -20,10 +20,9 @@ export class ProdutoStore {
     }
 
     search(filter: ProdutoFilter) {
-        return this.httClient.get<ProdutoResponse[]>(
-            `${this.baseUrl}?id=${filter.id}&descricao=${filter.descricao}&situacao=${filter.situacao}`,
-            { headers: this.headers }
-        )
+        return this.httClient.get<ProdutoResponse[]>(`${this.baseUrl}?id=${filter.id}&descricao=${filter.descricao}&situacao=${filter.situacao}`, {
+            headers: this.headers,
+        })
     }
 
     getProdutoById(id: number) {
@@ -40,5 +39,9 @@ export class ProdutoStore {
 
     deleteProduto(id: number) {
         return this.httClient.delete(`${this.baseUrl}/${id}`, { headers: this.headers })
+    }
+
+    atualizarSituacao(id: number) {
+        return this.httClient.patch(`${this.baseUrl}/${id}/situacao`, { headers: this.headers })
     }
 }

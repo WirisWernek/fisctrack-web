@@ -37,7 +37,6 @@ export class FormProdutoComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        debugger
         this.produto = this.route.snapshot.data['produto'] as ProdutoResponse
         if (this.produto) {
             this.form.patchValue(

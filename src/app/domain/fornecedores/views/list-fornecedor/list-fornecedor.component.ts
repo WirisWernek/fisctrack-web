@@ -33,8 +33,8 @@ import { FornecedorFilter } from './../../../../models/dto/filters/fornecedor-fi
 })
 export class ListFornecedorComponent {
     fornecedorStore = inject(FornecedorStore)
-	fb = inject(FormBuilder)
-	router = inject(Router)
+    fb = inject(FormBuilder)
+    router = inject(Router)
     fornecedores!: FornecedorResponse[]
     options: any[] = [
         { label: 'Ativo', value: SituacaoFornecedorEnum.ATIVO },
@@ -64,6 +64,26 @@ export class ListFornecedorComponent {
 
     editarFornecedor(fornecedor: FornecedorResponse) {
         this.router.navigate(['/fornecedores/form', fornecedor.id])
+    }
+
+    excluirFornecedor(fornecedor: FornecedorResponse) {
+        this.fornecedorStore.deleteFornecedor(fornecedor.id).subscribe({
+            next: () => {
+                this.pesquisar()
+            },
+            error: (err) => {},
+            complete: () => {},
+        })
+    }
+
+    baixarFornecedor(fornecedor: FornecedorResponse) {
+        this.fornecedorStore.baixarFornecedor(fornecedor.id).subscribe({
+            next: () => {
+                this.pesquisar()
+            },
+            error: (err) => {},
+            complete: () => {},
+        })
     }
 
     limpar() {

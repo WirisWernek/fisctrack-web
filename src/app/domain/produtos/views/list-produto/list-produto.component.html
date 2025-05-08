@@ -35,8 +35,8 @@
                     <td>{{ produto.situacao }}</td>
                     <td class="flex justify-center gap-2">
                         <p-button icon="pi pi-pencil" (click)="editarProduto(produto)" severity="info" rounded />
-                        <p-button icon="pi pi-trash" (click)="editarProduto(produto)" severity="danger" rounded />
-                        <p-button icon="pi pi-power-off" (click)="editarProduto(produto)" severity="secondary" rounded />
+                        <p-button icon="pi pi-trash" (click)="excluirProduto(produto)" severity="danger" rounded />
+                        <p-button icon="pi pi-power-off" (click)="alterarSituacao(produto)" severity="secondary" rounded />
                     </td>
                 </tr>
             </ng-template>

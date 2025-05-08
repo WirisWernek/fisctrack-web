@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { FornecedorRequest } from '@models/dto/requests/fornecedor-request.model'
 import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.model'
 import { SituacaoFornecedorEnum } from '@models/enums/situacao-fornecedor.enum'
-import { SituacaoProdutoEnum } from '@models/enums/situacao-produto.enum'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
 import { ButtonModule } from 'primeng/button'
 import { InputMaskModule } from 'primeng/inputmask'
@@ -27,8 +26,9 @@ export class FormFornecedorComponent implements OnInit {
     fornecedor?: FornecedorResponse
 
     options: any[] = [
-        { label: 'Ativo', value: SituacaoProdutoEnum.ATIVO },
-        { label: 'Inativo', value: SituacaoProdutoEnum.INATIVO },
+        { label: 'Ativo', value: SituacaoFornecedorEnum.ATIVO },
+        { label: 'Suspenso', value: SituacaoFornecedorEnum.SUSPENSO },
+        { label: 'Baixado', value: SituacaoFornecedorEnum.BAIXADO },
     ]
 
     constructor() {
@@ -40,8 +40,8 @@ export class FormFornecedorComponent implements OnInit {
             situacao: ['', Validators.required],
         })
     }
+
     ngOnInit(): void {
-        debugger
         this.fornecedor = this.route.snapshot.data['fornecedor'] as FornecedorResponse
         if (this.fornecedor) {
             this.form.patchValue(
@@ -71,25 +71,25 @@ export class FormFornecedorComponent implements OnInit {
             this.router.navigate(['/fornecedores'])
             console.log('Fornecedor cadastrado com sucesso')
         })
-	}
+    }
 
-	editar() {
-		const data = this.form.getRawValue()
-		const fornecedorRequest = {
-			id: this.fornecedor?.id,
-			razaoSocial: data.razaoSocial,
-			cnpj: data.cnpj,
-			telefone: data.telefone,
-			email: data.email,
-			situacao: SituacaoFornecedorEnum[data.situacao.value as keyof typeof SituacaoFornecedorEnum],
-		} as FornecedorRequest
+    editar() {
+        const data = this.form.getRawValue()
+        const fornecedorRequest = {
+            id: this.fornecedor?.id,
+            razaoSocial: data.razaoSocial,
+            cnpj: data.cnpj,
+            telefone: data.telefone,
+            email: data.email,
+            situacao: SituacaoFornecedorEnum[data.situacao.value as keyof typeof SituacaoFornecedorEnum],
+        } as FornecedorRequest
 
-		this.fornecedorStore.updateFornecedor(this.fornecedor!.id, fornecedorRequest).subscribe(() => {
-			this.router.navigate(['/fornecedores'])
-			console.log('Fornecedor editado com sucesso')
-		})
-	}
-	
+        this.fornecedorStore.updateFornecedor(this.fornecedor!.id, fornecedorRequest).subscribe(() => {
+            this.router.navigate(['/fornecedores'])
+            console.log('Fornecedor editado com sucesso')
+        })
+    }
+
     limpar() {
         this.form.reset()
     }

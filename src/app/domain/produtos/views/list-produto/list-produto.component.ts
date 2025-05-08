@@ -64,6 +64,26 @@ export class ListProdutoComponent implements OnInit {
         this.router.navigate(['/produtos/form', produto.id])
     }
 
+    excluirProduto(produto: ProdutoResponse) {
+        this.produtoStore.deleteProduto(produto.id).subscribe({
+            next: () => {
+                this.pesquisar()
+            },
+            error: (err) => {},
+            complete: () => {},
+        })
+    }
+
+    alterarSituacao(produto: ProdutoResponse) {
+        this.produtoStore.atualizarSituacao(produto.id).subscribe({
+            next: () => {
+                this.pesquisar()
+            },
+            error: (err) => {},
+            complete: () => {},
+        })
+    }
+
     limpar() {
         this.form.reset()
         this.pesquisar()

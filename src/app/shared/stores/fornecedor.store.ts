@@ -42,5 +42,9 @@ export class FornecedorStore {
 
     deleteFornecedor(id: number) {
         return this.httClient.delete(`${this.baseUrl}/${id}`, { headers: this.headers })
-    }
+	}
+	
+	baixarFornecedor(id: number) {
+		return this.httClient.patch(`${this.baseUrl}/${id}/baixa`, {}, { headers: this.headers })
+	}
 }

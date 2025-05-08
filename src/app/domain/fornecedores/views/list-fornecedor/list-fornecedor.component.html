@@ -37,8 +37,8 @@
                     <td>{{ fornecedor.situacao }}</td>
                     <td class="flex justify-center gap-2">
                         <p-button icon="pi pi-pencil" (click)="editarFornecedor(fornecedor)" severity="info" rounded />
-                        <p-button icon="pi pi-trash" (click)="editarFornecedor(fornecedor)" severity="danger" rounded />
-                        <p-button icon="pi pi-ban" (click)="editarFornecedor(fornecedor)" severity="secondary" rounded />
+                        <p-button icon="pi pi-trash" (click)="excluirFornecedor(fornecedor)" severity="danger" rounded />
+                        <p-button icon="pi pi-ban" (click)="baixarFornecedor(fornecedor)" severity="secondary" rounded />
                     </td>
                 </tr>
             </ng-template>
