@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common'
 import { Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -31,7 +32,8 @@ import { ToastModule } from 'primeng/toast'
         SelectModule,
         InputTextModule,
         InputNumberModule,
-        InputMaskModule,
+		InputMaskModule,
+		CurrencyPipe
     ],
     templateUrl: './form-nota-fiscal.component.html',
     styleUrl: './form-nota-fiscal.component.scss',
@@ -57,7 +59,7 @@ export class FormNotaFiscalComponent implements OnInit {
     constructor() {
         this.form = this.fb.group({
             numeroNota: ['', Validators.required],
-            total: [null, Validators.required],
+            total: [null, Validators.required ],
             fornecedor: ['', Validators.required],
             email: ['', Validators.required],
 
@@ -69,7 +71,9 @@ export class FormNotaFiscalComponent implements OnInit {
             pais: ['', Validators.required],
             cep: ['', Validators.required],
             itens: [[], Validators.required],
-        })
+		})
+		
+		this.form.get('total')?.disable()
 
         this.formItems = this.fb.group({
             produto: [null],
@@ -249,7 +253,12 @@ export class FormNotaFiscalComponent implements OnInit {
     }
 
     limpar() {
-        this.form.reset()
+		this.form.reset()
+		this.formItems.reset()
+		this.form.get('total')?.disable()
+		this.form.patchValue({
+			itens: [],
+		})
     }
 
     voltar() {

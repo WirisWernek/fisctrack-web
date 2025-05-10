@@ -15,8 +15,8 @@
 				<p-select id="situacao" formControlName="situacao" [options]="options" optionLabel="label" placeholder="Selecione uma situação" class="w-full" />
 			</div>
 			<div class="flex flex-row gap-2">
-				<p-button label="Pesquisar" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
-				<p-button label="Limpar" [raised]="true" severity="warn" (click)="limpar()" (onKeyOPress)="limpar()" />
+				<p-button label="Pesquisar" icon="pi pi-search" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
+				<p-button label="Limpar" icon="pi pi-eraser" [raised]="true" severity="warn" (click)="limpar()" (onKeyOPress)="limpar()" />
 			</div>
 		</form>
 	</fieldset>
@@ -36,8 +36,8 @@
             <ng-template #body let-fornecedor>
                 <tr>
 					<td>{{ fornecedor.razaoSocial }}</td>
-                    <td>{{ fornecedor.cnpj }}</td>
-                    <td>{{ fornecedor.dataBaixa }}</td>
+                    <td>{{ fornecedor.cnpj | mask: '00.000.000/0000-00' }}</td>
+                    <td>{{ fornecedor.dataBaixa | date : 'dd/MM/YYYY' }}</td>
                     <td>{{ fornecedor.situacao }}</td>
                     <td class="flex justify-center gap-2">
                         <p-button icon="pi pi-pencil" (click)="editarFornecedor(fornecedor)" severity="info" rounded />

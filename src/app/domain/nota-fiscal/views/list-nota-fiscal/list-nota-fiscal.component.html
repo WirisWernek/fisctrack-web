@@ -9,16 +9,16 @@
                     formControlName="fornecedor"
                     [options]="fornecedoresOption"
                     optionLabel="label"
-                    placeholder="Selecione uma situação"
+                    placeholder="Selecione um fornecedor"
                 />
             </div>
             <div class="flex flex-col gap-2 w-full lg:flex-1">
                 <label for="numeroNota">Numero da Nota</label>
                 <p-inputmask
-                    mask="99.999.999/9999-99"
+                    mask="999.999.999"
                     [autoClear]="false"
                     id="numeroNota"
-                    placeholder="00.000.000/0000-00"
+                    placeholder="000.000.000"
                     unmask="true"
                     formControlName="numeroNota"
                     class="w-full"
@@ -53,8 +53,8 @@
                 </div>
             </div>
             <div class="flex flex-row gap-2 flex-1">
-                <p-button label="Pesquisar" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
-                <p-button label="Limpar" [raised]="true" severity="warn" (click)="limpar()" (onKeyOPress)="limpar()" />
+				<p-button label="Pesquisar" icon="pi pi-search" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
+				<p-button label="Limpar" icon="pi pi-eraser" [raised]="true" severity="warn" (click)="limpar()" (onKeyOPress)="limpar()" />
             </div>
         </form>
     </fieldset>
@@ -64,9 +64,9 @@
         <p-table [value]="notasFiscais" stripedRows [tableStyle]="{ 'min-width': '20rem', width: '100%', 'align-self': 'center' }" class="w-full">
             <ng-template #header>
                 <tr>
-                    <th>Numero Nota</th>
+                    <th>Número Nota</th>
                     <th>Fornecedor</th>
-                    <th>Data Emissão</th>
+                    <th>Data da Emissão</th>
                     <th>Quantidade de Produtos</th>
                     <th>Total</th>
                     <th></th>
@@ -74,11 +74,11 @@
             </ng-template>
             <ng-template #body let-notaFiscal>
                 <tr>
-                    <td>{{ notaFiscal.numeroNota }}</td>
+                    <td>{{ notaFiscal.numeroNota | mask: '000.000.000' }}</td>
                     <td>{{ notaFiscal.fornecedor.razaoSocial }}</td>
                     <td>{{ notaFiscal.emissao | date : 'dd/MM/YYYY HH:mm' }}</td>
                     <td>{{ notaFiscal.quantidadeProdutos }}</td>
-                    <td>{{ notaFiscal.total }}</td>
+                    <td>{{ notaFiscal.total | currency: 'BRL' }}</td>
                     <td class="flex justify-center gap-2">
                         <p-button icon="pi pi-pencil" (click)="editarFornecedor(notaFiscal)" severity="info" rounded />
                         <p-button icon="pi pi-trash" (click)="editarFornecedor(notaFiscal)" severity="danger" rounded />

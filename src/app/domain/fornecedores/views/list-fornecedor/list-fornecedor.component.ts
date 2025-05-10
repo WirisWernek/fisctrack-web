@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common'
 import { Component, inject } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
@@ -5,6 +6,7 @@ import { FornecedorResponse } from '@models/dto/responses/fornecedor-reponse.mod
 import { SituacaoFornecedorEnum } from '@models/enums/situacao-fornecedor.enum'
 import { AlertService } from '@shared/services/alert.service'
 import { FornecedorStore } from '@shared/stores/fornecedor.store'
+import { NgxMaskPipe } from 'ngx-mask'
 import { ButtonModule } from 'primeng/button'
 import { InputMaskModule } from 'primeng/inputmask'
 import { InputNumberModule } from 'primeng/inputnumber'
@@ -27,7 +29,9 @@ import { FornecedorFilter } from './../../../../models/dto/filters/fornecedor-fi
         SelectModule,
         InputTextModule,
         InputNumberModule,
-        InputMaskModule,
+		InputMaskModule,
+		NgxMaskPipe,
+		DatePipe
     ],
     templateUrl: './list-fornecedor.component.html',
     styleUrl: './list-fornecedor.component.scss',

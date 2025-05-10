@@ -1,4 +1,4 @@
-import { DatePipe, registerLocaleData } from '@angular/common'
+import { CurrencyPipe, DatePipe, registerLocaleData } from '@angular/common'
 import { Component, inject } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NotaFiscalFilter } from '@models/dto/filters/nota-fiscal-filter.model'
@@ -18,6 +18,7 @@ import { FornecedorStore } from './../../../../shared/stores/fornecedor.store'
 import localePt from '@angular/common/locales/pt'
 import { Router } from '@angular/router'
 import { AlertService } from '@shared/services/alert.service'
+import { NgxMaskPipe } from 'ngx-mask'
 
 registerLocaleData(localePt)
 
@@ -36,6 +37,9 @@ registerLocaleData(localePt)
         InputMaskModule,
         DatePickerModule,
         DatePipe,
+
+        NgxMaskPipe,
+        CurrencyPipe,
     ],
     templateUrl: './list-nota-fiscal.component.html',
     styleUrl: './list-nota-fiscal.component.scss',

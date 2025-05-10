@@ -15,8 +15,8 @@
 				<p-select formControlName="situacao" [options]="options" optionLabel="label" placeholder="Selecione uma situação" class="w-full" />
 			</div>
 			<div class="flex flex-row gap-2">
-				<p-button label="Pesquisar" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
-				<p-button label="Limpar" [raised]="true" severity="warn" (click)="limpar()" (onKeyOPress)="limpar()" />
+				<p-button label="Pesquisar" icon="pi pi-search" (click)="pesquisar()" (onKeyPress)="pesquisar()" />
+				<p-button label="Limpar" icon="pi pi-eraser" [raised]="true" severity="warn" (click)="limpar()" (onKeyOPress)="limpar()" />
 			</div>
 		</form>
 	</fieldset>
