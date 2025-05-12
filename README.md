@@ -1,59 +1,30 @@
-# FisctrackWeb
+# Fisctrack Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.4.
+## 🔥 Sobre
 
-## Development server
+O projeto Fisctrack Web tem como objetivo ser um gerenciador de notas fiscais, nele é possível realizar o cadastro de fornecedores, produtos bem como o cadastro das próprias notas fiscais.
 
-To start a local development server, run:
+## 🔨 Como executar esta aplicação?
 
-```bash
-ng serve
-```
+### Pré requisitos
+ - NodeJS na versão `20.0` ou superior
+ - Angular CLI na versão `19.2` ou superior
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Tutorial
+Para executar a aplicação voce deve:
+- OBS: Caso sua versão do Angular não seja compatível, recomendo executar os comandos através do `npx`
+- Primeiro clonar este repositório
+- Navegar para a pasta `fisctrack-web`
+- Executar o comando `npm i` para instalar as dependências do projeto
+- Executar o comando `ng s` ou `ng serve` para rodar a aplicação
+- Abrir em seu navegador de preferência a URL `http://localhost:4200/` para acessar a aplicação
+- Se desejar pode executar diretamente `ng s -o` ou `ng serve --open` para executar a aplicação e abrir automaticamente o navegador já na pagina da aplicação
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📦 Tecnologias usadas
+- ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+- ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+- ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+- ![PrimeNG](https://img.shields.io/badge/primeng-%23DD0031.svg?style=for-the-badge&logo=primeng&logoColor=white)
+- ![SCSS](https://img.shields.io/badge/SCSS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
+- ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+- ![RxJS](https://img.shields.io/badge/rxjs-%23B7178C.svg?style=for-the-badge&logo=reactivex&logoColor=white)
